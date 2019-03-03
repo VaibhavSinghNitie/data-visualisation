@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <script src="http://d3js.org/d3.v5.min.js"></script>
+        <title>Visualization Page</title>
+    </head>
+    <body>
+        <div class="viz"></div>
+        <script type="text/javascript">
+            var dataBar = [23, 45, 67, 99, 112, 80];
+            var vizHeight = 600;
+            var vizWidth = 1250;
+            var barPadding = 5;
+            var barWidth = vizWidth/dataBar.length;
+
+            //var xScale = d3.scaleLinear()
+            //        .domain([0,d3.max(dataBar)])
+            //        .range([0, barWidth])
+            
+            var yScale = d3.scaleLinear()
+                    .domain([0, d3.max(dataBar)])
+                    .range([0, vizHeight])
+
+            var svg = d3.select("div")
+                        .append("svg")
+                        .attr("height", vizHeight)
+                        .attr("width", vizWidth);
+            
+            var bars = svg.selectAll("g")
+                    .data(dataBar)
+                    .enter()
+                    .append("g")
+                    .attr("transform", function(d, i){
+                        return "translate("+ barWidth*i + ")";
+                    });
+
+            bars.append("rect")
+                .attr("width", function(d){return barWidth-barPadding;})
+                .attr("height", function(d){return yScale(d);})
+                .attr("y", function(d){return vizHeight - yScale(d);});
+            
+            bars.append("text")
+                .attr("x", function(d,i){return barWidth/2 - 5})
+                .attr("y", function(d) { return vizHeight - yScale(d) + 10; })
+                .attr("alignment-baseline", "middle")
+                .attr("text-anchor", "middle")
+                .attr("dy", ".35em")
+                .attr("fill", "white")
+                .text(function(d){return d;})
+
+    
+
+            
+            
+
+/*
+            var barChart = svg.selectAll("rect")
+                    .data(dataBar)
+                    .enter()
+                    .append("rect")
+                    .attr("y", function(d) {return vizHeight-yScale(d);})
+                    .attr("height", function(d){return yScale(d);})
+                    .attr("width", barWidth - barPadding)
+                    .attr("transform", function(d, i){
+                        var translate = [barWidth*i, 0];
+                        return "translate(" + translate + ")";
+                    });
+
+            var barValue = svg.selectAll("text")
+                    .data(dataBar)
+                    .enter()
+                    .append("text")
+                    .text(function(d){return d;})
+                    .attr("y", "50%")//function(d){return vizHeight - yScale(d)/2})
+                    .attr("x", "50%")//function(d, i) {return barWidth*i + barWidth/2 - 5})
+                    .attr("alignment-baseline", "middle")
+                    .attr("text-anchor", "middle")
+                    .attr("fill","white");
+                    
+*/
+        </script>
+    </body>
+</html>
