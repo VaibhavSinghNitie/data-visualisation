@@ -1,0 +1,50 @@
+[
+    {
+        "name": "s1",
+        "dependencies": [],
+        "tags": ["stream"],
+        "type": "arc"
+    },
+    {
+        "name": "s2",
+        "dependencies": [],
+        "tags": ["stream"],
+        "type": "arc"
+    },
+    {
+        "name": "s3",
+        "dependencies": [],
+        "tags": ["stream"],
+        "type": "arc"
+    },
+    {
+        "name": "q1",
+        "dependencies": ["s1"],
+        "tags": ["stockpile"],
+        "type": "node"
+    },
+    {
+        "name": "q2",
+        "dependencies": ["s2"],
+        "tags": ["stockpile"],
+        "type": "node"
+    },
+    {
+        "name": "q3",
+        "dependencies": ["s3"],
+        "tags": ["stockpile"],
+        "type": "node"
+    },
+    {
+        "name": "s4",
+        "dependencies": ["q1", "q2", "q3"],
+        "tags": [],
+        "type": "arc"
+    },
+    {
+        "name": "p1",
+        "dependencies": ["s4"],
+        "tags": ["process"],
+        "type": "node"
+    }
+]
