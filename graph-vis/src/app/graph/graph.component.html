@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row">
+        <div class="col-2">
+            <div class="form-floating">
+                <select class="form-select" id="graph-name" (input)="onSelectGraphName($event)">
+                  <option [ngValue]="null" disabled selected>Select graph</option>
+                  <option *ngFor="let graphName of graphNames" [value]="graphName">{{graphName}}</option>
+                </select>
+                <label for="graph-name">Graph-name</label>
+              </div>
+            </div>
+        <div class="col-2">
+            <div class="form-floating">
+                <select class="form-select" id="graph-version" (input)="onSelectGraphVersion($event)">
+                  <option [ngValue]="null" disabled selected>Select version</option>
+                  <option *ngFor="let graphVersion of graphVersions" [value]="graphVersion">{{graphVersion}}</option>
+                </select>
+                <label for="graph-version">Graph-version</label>
+              </div>
+        </div>
+    </div>
+<div>
