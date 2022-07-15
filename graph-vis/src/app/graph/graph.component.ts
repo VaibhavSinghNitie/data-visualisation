@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DependencyService } from '../../services/dependency.service';
 import { Dependency } from 'src/models/dependency.model';
-import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-graph',
@@ -20,25 +19,36 @@ export class GraphComponent implements OnInit {
 
   constructor(private dependencyService: DependencyService) {}
 
+  // private functions
+  private getDependency() {
+    this.dependencyService.fetchDependencies(this.graphName, this.graphVersion).subscribe((dependencies) => {
+      this.dependencies = dependencies
+    })
+  }
+
+  private getGraphVersions() {
+    this.dependencyService.fetchGraphVersions(this.graphName).subscribe((versions)=>{
+      this.graphVersions = versions
+      this.graphVersion = versions[0]
+      this.getDependency()
+    })
+  }
+
   ngOnInit(): void {
-    this.dependencyService.getGraphNames();
-    this.graphNames = this.dependencyService.graphNames
-    this.graphVersions = this.dependencyService.graphVersions
-    this.graphName = this.dependencyService.selectedGraphName
-    this.graphVersion = this.dependencyService.selectedGraphVersion
+    this.dependencyService.fetchGraphNames().subscribe((names)=>{
+      this.graphNames = names
+    });
+
   }
 
   onSelectGraphName(event: Event){
-    this.dependencyService.setGraphName((<HTMLInputElement>event.target).value)
-    this.dependencyService.getGraphVersions()
+    this.graphName = (<HTMLInputElement>event.target).value
+    this.getGraphVersions()
   };
 
   onSelectGraphVersion(event: Event){
-      this.dependencyService.setGraphVersion((<HTMLInputElement>event.target).value)
-      this.dependencyService.getDependencies()
+      this.graphVersion = (<HTMLInputElement>event.target).value
+      this.getDependency()
   };
-
-
-
 
 }
