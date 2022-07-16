@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DependencyService } from '../../services/dependency.service';
 import { Dependency } from 'src/models/dependency.model';
+import * as d3 from 'd3';
+import {Graph} from '../../visualisation/graph'
 
 @Component({
   selector: 'app-graph',
@@ -10,6 +12,9 @@ import { Dependency } from 'src/models/dependency.model';
   providers: [DependencyService]
 })
 export class GraphComponent implements OnInit {
+
+  private svg: any;
+  private group: any;
 
   public dependencies: Dependency[] = []
   public graphNames: string[] = []
@@ -23,6 +28,8 @@ export class GraphComponent implements OnInit {
   private getDependency() {
     this.dependencyService.fetchDependencies(this.graphName, this.graphVersion).subscribe((dependencies) => {
       this.dependencies = dependencies
+      this.createGraph()
+
     })
   }
 
@@ -38,7 +45,6 @@ export class GraphComponent implements OnInit {
     this.dependencyService.fetchGraphNames().subscribe((names)=>{
       this.graphNames = names
     });
-
   }
 
   onSelectGraphName(event: Event){
@@ -50,5 +56,10 @@ export class GraphComponent implements OnInit {
       this.graphVersion = (<HTMLInputElement>event.target).value
       this.getDependency()
   };
+
+  createGraph() {
+    let graph = new Graph('#vis', "100%", "100%", this.dependencies)
+    graph.init()
+  }
 
 }

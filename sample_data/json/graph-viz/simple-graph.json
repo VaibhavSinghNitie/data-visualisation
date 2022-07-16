@@ -1,19 +1,25 @@
 [
     {
-        "name": "s1",
+        "name": "source",
         "dependencies": [],
+        "tags": ["root"],
+        "type": "node"
+    },
+    {
+        "name": "s1",
+        "dependencies": ["source"],
         "tags": ["stream"],
         "type": "arc"
     },
     {
         "name": "s2",
-        "dependencies": [],
+        "dependencies": ["source"],
         "tags": ["stream"],
         "type": "arc"
     },
     {
         "name": "s3",
-        "dependencies": [],
+        "dependencies": ["source"],
         "tags": ["stream"],
         "type": "arc"
     },
@@ -37,13 +43,25 @@
     },
     {
         "name": "s4",
-        "dependencies": ["q1", "q2", "q3"],
+        "dependencies": ["q1"],
+        "tags": [],
+        "type": "arc"
+    },
+    {
+        "name": "s5",
+        "dependencies": ["q2"],
+        "tags": [],
+        "type": "arc"
+    },
+    {
+        "name": "s6",
+        "dependencies": ["q3"],
         "tags": [],
         "type": "arc"
     },
     {
         "name": "p1",
-        "dependencies": ["s4"],
+        "dependencies": ["s4", "s5", "s6"],
         "tags": ["process"],
         "type": "node"
     }

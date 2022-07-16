@@ -13,7 +13,7 @@ db.dependencies.drop()
 // read sample data
 const fs = require("fs");
 const simpleGraph = JSON.parse(fs.readFileSync('sample_data/json/graph-viz/simple-graph.json', 'utf8'));
-const complexGraph = JSON.parse(fs.readFileSync('sample_data/json/graph-viz/simple-graph.json', 'utf8'));
+const complexGraph = JSON.parse(fs.readFileSync('sample_data/json/graph-viz/complex-graph.json', 'utf8'));
 
 // Insert a few documents into the sales collection.
 db.dependencies.insertOne({
