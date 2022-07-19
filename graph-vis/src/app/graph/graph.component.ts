@@ -15,6 +15,7 @@ export class GraphComponent implements OnInit {
 
   private svg: any;
   private group: any;
+  private graph: any = null;
 
   public dependencies: Dependency[] = []
   public graphNames: string[] = []
@@ -58,8 +59,11 @@ export class GraphComponent implements OnInit {
   };
 
   createGraph() {
-    let graph = new Graph('#vis', "100%", "100%", this.dependencies)
-    graph.init()
+    if (this.graph) {
+      this.graph.endGraph()
+    }
+    this.graph = new Graph('#vis', "100%", "100%", this.dependencies)
+    this.graph.init()
   }
 
 }

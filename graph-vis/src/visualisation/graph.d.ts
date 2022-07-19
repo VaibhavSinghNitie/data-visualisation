@@ -16,5 +16,8 @@ export class Graph{
     wrangleData(): void;
     updateDate(): void;
     addDefs(): void;
+    createRootNode(): Dependency;
+    endGraph(): void;
+    addGroups(): void;
 
 }

@@ -16,23 +16,9 @@ const simpleGraph = JSON.parse(fs.readFileSync('sample_data/json/graph-viz/simpl
 const complexGraph = JSON.parse(fs.readFileSync('sample_data/json/graph-viz/complex-graph.json', 'utf8'));
 
 // Insert a few documents into the sales collection.
-db.dependencies.insertOne({
-    "name": "simple-graph",
-    "version": "1.0.0",
-    "graph": simpleGraph
-});
+db.dependencies.insertOne(simpleGraph);
 
-db.dependencies.insertOne({
-    "name": "simple-graph",
-    "version": "1.0.1",
-    "graph": simpleGraph
-});
-
-db.dependencies.insertOne({
-    "name": "complex-graph",
-    "version": "1.0.0",
-    "graph": complexGraph
-});
+db.dependencies.insertOne(complexGraph);
 // Run a find command to view items sold on April 4th, 2014.
 // db.sales.find({ date: { $gte: new Date('2014-04-04'), $lt: new Date('2014-04-05') } });
 

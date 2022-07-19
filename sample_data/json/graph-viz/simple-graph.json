@@ -1,68 +1,93 @@
-[
-    {
-        "name": "source",
-        "dependencies": [],
-        "tags": ["root"],
-        "type": "node"
-    },
-    {
-        "name": "s1",
-        "dependencies": ["source"],
-        "tags": ["stream"],
-        "type": "arc"
-    },
-    {
-        "name": "s2",
-        "dependencies": ["source"],
-        "tags": ["stream"],
-        "type": "arc"
-    },
-    {
-        "name": "s3",
-        "dependencies": ["source"],
-        "tags": ["stream"],
-        "type": "arc"
-    },
-    {
-        "name": "q1",
-        "dependencies": ["s1"],
-        "tags": ["stockpile"],
-        "type": "node"
-    },
-    {
-        "name": "q2",
-        "dependencies": ["s2"],
-        "tags": ["stockpile"],
-        "type": "node"
-    },
-    {
-        "name": "q3",
-        "dependencies": ["s3"],
-        "tags": ["stockpile"],
-        "type": "node"
-    },
-    {
-        "name": "s4",
-        "dependencies": ["q1"],
-        "tags": [],
-        "type": "arc"
-    },
-    {
-        "name": "s5",
-        "dependencies": ["q2"],
-        "tags": [],
-        "type": "arc"
-    },
-    {
-        "name": "s6",
-        "dependencies": ["q3"],
-        "tags": [],
-        "type": "arc"
-    },
-    {
-        "name": "p1",
-        "dependencies": ["s4", "s5", "s6"],
-        "tags": ["process"],
-        "type": "node"
-    }
-]
+{
+    "name": "simple-graph",
+    "version": "1.0.0",
+    "graph": [
+        {
+            "name": "source",
+            "dependencies": [],
+            "meta": {
+                "type": "node",
+                "group": "root",
+                "max": 100
+            }
+        },
+        {
+            "name": "s1",
+            "dependencies": ["source"],
+            "meta": {
+                "group": "stream",
+                "type": "arc",
+                "max": 200
+            }
+        },
+        {
+            "name": "s2",
+            "dependencies": ["source"],
+            "meta": {
+                "group": "stream",
+                "type": "arc"
+            }
+        },
+        {
+            "name": "s3",
+            "dependencies": ["source"],
+            "meta": {
+                "group": "stream",
+                "type": "arc"
+            }
+        },
+        {
+            "name": "q1",
+            "dependencies": ["s1"],
+            "meta": {
+                "group": "stockpile",
+                "type": "node"
+            }
+        },
+        {
+            "name": "q2",
+            "dependencies": ["s2"],
+            "meta": {
+                "group": "stockpile",
+                "type": "node"
+            }
+        },
+        {
+            "name": "q3",
+            "dependencies": ["s3"],
+            "meta": {
+                "group": "stockpile",
+                "type": "node"
+            }
+        },
+        {
+            "name": "s4",
+            "dependencies": ["q1"],
+            "meta": {
+                "type": "arc"
+            }
+        },
+        {
+            "name": "s5",
+            "dependencies": ["q2"],
+            "meta": {
+                "type": "arc"
+            }
+        },
+        {
+            "name": "s6",
+            "dependencies": ["q3"],
+            "meta": {
+                "type": "arc"
+            }
+        },
+        {
+            "name": "p1",
+            "dependencies": ["s4", "s5", "s6"],
+            "meta": {
+                "group": "process",
+                "type": "node"
+            }
+        }
+    ]
+}

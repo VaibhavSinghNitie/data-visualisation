@@ -6,10 +6,10 @@ export class Graph{
         this.parent = parent
         this.width = width
         this.height = height
-        this.data = data
+        this.data = data.graph
 
-        this.nodeColor = "#9baae6"
-        this.arcColor = "#133337"
+        this.nodeColor = "rgb(0,176,240)"
+        this.arcColor = "rgb(150,150,150)"
         this.radius = 20
     }
 
@@ -28,10 +28,15 @@ export class Graph{
     };
 
     wrangleData() {
-        let targets = {}
 
-        this.nodes = this.data.filter(d=> d.type == "node")
-        this.arcs = this.data.filter(d=> d.type == "arc")
+        let targets = {}
+        this.nodes = this.data.filter(d=> d.meta.type == "node")
+        this.arcs = this.data.filter(d=> d.meta.type == "arc")
+
+        const rootNode = this.createRootNode()
+
+        // this.addGroups() -- deprecated
+        console.log(this.arcs)
 
         this.nodes.forEach((node)=>{
             this.arcs.forEach((arc)=>{
@@ -42,9 +47,17 @@ export class Graph{
         })
 
         this.arcs.forEach((arc,i) => {
-            arc["source"] = this.nodes.filter(d => d.name == arc.dependencies[0])[0]
+            const deps = this.nodes.filter(d => d.name == arc.dependencies[arc.meta.sourceIndex])
+            if (deps.length == 0){
+                arc["source"] = rootNode
+            } else {
+                arc["source"] = deps[0]
+            }
             arc["target"] = targets[arc.name]
         });
+
+
+        console.log(this.arcs)
 
     };
 
@@ -55,7 +68,7 @@ export class Graph{
     generateNodes() {
 
         const simulation = d3.forceSimulation()
-            .force("link", d3.forceLink().id(d=>d.name).distance(this.radius*2.5))
+            .force("link", d3.forceLink().id(d=>d.name).distance(this.radius*5))
             .force("centre", d3.forceCenter(this.width/2, this.height/2))
             .force("charge", d3.forceManyBody())
             .force("collision", d3.forceCollide().radius(this.radius*1.50))
@@ -69,7 +82,7 @@ export class Graph{
             .data(this.arcs)
             .enter().append("line")
                 .attr("class", "link")
-                .attr("stroke", "black")
+                .attr("stroke", this.arcColor)
                 .attr("stroke-width", 2)
                 .attr("marker-end", "url(#arrowhead)")
 
@@ -90,6 +103,7 @@ export class Graph{
                 .attr("text-anchor", "middle")
                 .attr("font-size",  this.radius / ((this.radius * 10) / 100))
                 .attr("dy",  this.radius / ((this.radius * 25) / 100))
+                .attr("fill", "white")
 
         const ticked =  () => {
             this.arcElems
@@ -113,6 +127,7 @@ export class Graph{
         simulation.force("link")
             .links(this.arcs)
 
+
     }
 
     addDefs() {
@@ -124,6 +139,7 @@ export class Graph{
         this.svg.append("defs")
             .append("marker")
                 .attr("id", "arrowhead")
+                .attr("fill", this.arcColor)
                 .attr("markerWidth", arrowWidth)
                 .attr("markerHeight", arrowHeight)
                 .attr("refX", (arrowWidth*2 + arrowHeight))
@@ -131,5 +147,44 @@ export class Graph{
                 .attr("orient","auto")
                 .append("polygon")
                     .attr("points", points)
+    }
+
+    createRootNode() {
+        let rootNode = {}
+        // create if root node does not exist
+        const rootNodesArr = this.nodes.filter(d => d.name==="source" & d.meta.group == "root")
+
+        if (rootNodesArr.length == 0){
+            rootNode = {
+                name: "source",
+                dependencies: [],
+                meta: {
+                    group: "root",
+                    type: "node"
+                }
+            }
+            this.nodes.push(rootNode)
+
+        } else {
+            rootNode = rootNodesArr[0]
+        }
+
+        return rootNode
+    }
+
+    endGraph() {
+        d3.select("svg").remove();
+    }
+
+    addGroups() {
+        this.nodes.forEach(d => {
+            if (d.tags.includes("root")){
+                d["group"] = 0
+            } else if (d.tags.includes("stockpile")) {
+                d["group"] = 1
+            } else {
+                d["group"] = 2
+            }
+        })
     }
 }
